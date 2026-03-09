@@ -37,13 +37,6 @@
       "description": "Descricao da API em appsettings.",
       "replaces": "Template original .Net 10"
     },
-    "ApiVersion": {
-      "type": "parameter",
-      "datatype": "string",
-      "defaultValue": "v1.0.0",
-      "description": "Versao da API em appsettings.",
-      "replaces": "v1.0.0"
-    },
     "SatelliteLanguage": {
       "type": "parameter",
       "datatype": "string",
@@ -77,6 +70,7 @@
       "datatype": "string",
       "defaultValue": "my-api",
       "description": "Issuer esperado para o JWT.",
+      "isEnabled": "(JwtMode != \"None\")",
       "replaces": "__JWT_ISSUER__"
     },
     "JwtAudience": {
@@ -84,6 +78,7 @@
       "datatype": "string",
       "defaultValue": "my-api-clients",
       "description": "Audience esperada para o JWT.",
+      "isEnabled": "(JwtMode != \"None\")",
       "replaces": "__JWT_AUDIENCE__"
     },
     "JwtAccessTokenMinutes": {
@@ -91,6 +86,7 @@
       "datatype": "int",
       "defaultValue": "60",
       "description": "Duracao do access token em minutos.",
+      "isEnabled": "(JwtMode != \"None\")",
       "replaces": "__JWT_ACCESS_TOKEN_MINUTES__"
     },
     "JwtHs256Secret": {
@@ -98,6 +94,7 @@
       "datatype": "string",
       "defaultValue": "change-me-in-secrets",
       "description": "Segredo para assinatura HS256.",
+      "isEnabled": "(JwtMode == \"HS256\")",
       "replaces": "__JWT_HS256_SECRET__"
     },
     "JwtEs256PrivateKeyPem": {
@@ -105,6 +102,7 @@
       "datatype": "string",
       "defaultValue": "",
       "description": "Chave privada ES256 em PEM.",
+      "isEnabled": "(JwtMode == \"ES256\")",
       "replaces": "__JWT_ES256_PRIVATE_KEY_PEM__"
     },
     "JwtEs256PublicKeyPem": {
@@ -112,6 +110,7 @@
       "datatype": "string",
       "defaultValue": "",
       "description": "Chave publica ES256 em PEM.",
+      "isEnabled": "(JwtMode == \"ES256\")",
       "replaces": "__JWT_ES256_PUBLIC_KEY_PEM__"
     },
     "JwtExposePublicKey": {
@@ -127,6 +126,7 @@
       "datatype": "bool",
       "defaultValue": "true",
       "description": "Forcar validacao de issuer no token.",
+      "isEnabled": "(JwtMode != \"None\")",
       "replaces": "__JWT_ENFORCE_ISSUER__"
     },
     "JwtEnforceAudience": {
@@ -134,6 +134,7 @@
       "datatype": "bool",
       "defaultValue": "true",
       "description": "Forcar validacao de audience no token.",
+      "isEnabled": "(JwtMode != \"None\")",
       "replaces": "__JWT_ENFORCE_AUDIENCE__"
     },
     "JwtEnforceExpiration": {
@@ -141,6 +142,7 @@
       "datatype": "bool",
       "defaultValue": "true",
       "description": "Forcar expiracao do token.",
+      "isEnabled": "(JwtMode != \"None\")",
       "replaces": "__JWT_ENFORCE_EXPIRATION__"
     },
     "JwtEnforceSignedTokens": {
@@ -148,6 +150,7 @@
       "datatype": "bool",
       "defaultValue": "true",
       "description": "Forcar que o token esteja assinado.",
+      "isEnabled": "(JwtMode != \"None\")",
       "replaces": "__JWT_ENFORCE_SIGNED_TOKENS__"
     },
     "JwtEnforceSigningKey": {
@@ -155,49 +158,8 @@
       "datatype": "bool",
       "defaultValue": "true",
       "description": "Forcar validacao da chave de assinatura.",
+      "isEnabled": "(JwtMode != \"None\")",
       "replaces": "__JWT_ENFORCE_SIGNING_KEY__"
-    },
-    "DbProvider": {
-      "type": "parameter",
-      "datatype": "choice",
-      "description": "Provider padrao de banco.",
-      "defaultValue": "SqlServer",
-      "replaces": "__DB_PROVIDER__",
-      "choices": [
-        {
-          "choice": "Sqlite",
-          "description": "SQLite local"
-        },
-        {
-          "choice": "SqlServer",
-          "description": "Microsoft SQL Server"
-        },
-        {
-          "choice": "InMemory",
-          "description": "Banco em memoria para desenvolvimento/testes"
-        }
-      ]
-    },
-    "DbSqliteConnectionString": {
-      "type": "parameter",
-      "datatype": "string",
-      "defaultValue": "Data Source=app.db",
-      "description": "Connection string do SQLite.",
-      "replaces": "__DB_SQLITE_CONNECTION_STRING__"
-    },
-    "DbSqlServerConnectionString": {
-      "type": "parameter",
-      "datatype": "string",
-      "defaultValue": "Server=localhost,1433;Database=MyApiDb;User Id=sa;Password=Your_password123;TrustServerCertificate=True;",
-      "description": "Connection string do SQL Server.",
-      "replaces": "__DB_SQLSERVER_CONNECTION_STRING__"
-    },
-    "DbInMemoryName": {
-      "type": "parameter",
-      "datatype": "string",
-      "defaultValue": "MyApiDb",
-      "description": "Nome do banco InMemory.",
-      "replaces": "__DB_INMEMORY_NAME__"
     },
     "WebSocketsEnabled": {
       "type": "parameter",

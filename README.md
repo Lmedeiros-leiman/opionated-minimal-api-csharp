@@ -9,7 +9,7 @@ Template short name: `owebapi`
 - Minimal API structure with feature-based organization
 - JWT modes: `None`, `HS256`, `ES256`
 - Optional `/.well-known/jwts.json` endpoint (ES256 + public key exposure)
-- Built-in config sections for Authentication, Database, WebSockets, and Logging
+- Built-in config sections for Authentication, Database, WebSockets, Runtime, and Logging
 - Optional AOT generation (`GenerateAot`)
 - Conditional file generation based on selected options
 
@@ -56,7 +56,6 @@ dotnet new owebapi -n MyApi \
 
 - `--JwtMode`: `None | HS256 | ES256`
 - `--JwtExposePublicKey`: `true | false`
-- `--DbProvider`: `Sqlite | SqlServer | InMemory`
 - `--WebSocketsEnabled`: `true | false`
 - `--LogToConsole`: `true | false`
 - `--LogToFile`: `true | false`
