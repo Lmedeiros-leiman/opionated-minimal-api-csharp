@@ -10,9 +10,9 @@
     <PackageId>Lmedeiros.OpinionatedWebApi.Template</PackageId>
     <Version>1.0.0</Version>
     <Authors>Leonardo Medeiros Leiman</Authors>
-    <Description>Opinionated Minimal API template with optional AOT/JWT features.</Description>
+    <Description>Opinionated Minimal API template with optional AOT/JWT features. AOT friendly, Serilog file and console config with a JWT ES256 or HS256 config ready. Following a vertical cut architectural design.</Description>
     <PackageTags>dotnet-new;template;webapi;minimalapi;aot</PackageTags>
-    <RepositoryUrl>https://github.com/SEU_USUARIO/SEU_REPO</RepositoryUrl>
+    <RepositoryUrl>https://github.com/Lmedeiros-leiman/opionated-minimal-api-csharp.git</RepositoryUrl>
     <PackageOutputPath>./nupkg</PackageOutputPath>
     <NoWarn>$(NoWarn);NU5128</NoWarn>
   </PropertyGroup>
