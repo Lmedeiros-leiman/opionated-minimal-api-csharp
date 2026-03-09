@@ -1,0 +1,293 @@
+{
+  "$schema": "http://json.schemastore.org/template",
+  "author": "Leonardo Medeiros Leiman",
+  "classifications": [
+    "Web",
+    "Linux",
+    "macOS",
+    "Windows",
+    "API",
+    "AOT",
+    "Web API"
+  ],
+  "name": "Web ASP.NET Opinionated Minimal API",
+  "description": "Template base para Minimal API organizada por features (vertical slice).",
+  "identity": "Lmedeiros.Api.Template",
+  "groupIdentity": "Lmedeiros.Api.Template",
+  "shortName": "owebapi",
+  "sourceName": "TemplateNormal",
+  "defaultName": "MyApi",
+  "preferNameDirectory": true,
+  "tags": {
+    "language": "C#",
+    "type": "project"
+  },
+  "symbols": {
+    "ApiName": {
+      "type": "parameter",
+      "datatype": "string",
+      "defaultValue": "Api Template, .Net 10",
+      "description": "Nome exibido da API em appsettings.",
+      "replaces": "Api Template, .Net 10"
+    },
+    "ApiDescription": {
+      "type": "parameter",
+      "datatype": "string",
+      "defaultValue": "Template original .Net 10",
+      "description": "Descricao da API em appsettings.",
+      "replaces": "Template original .Net 10"
+    },
+    "ApiVersion": {
+      "type": "parameter",
+      "datatype": "string",
+      "defaultValue": "v1.0.0",
+      "description": "Versao da API em appsettings.",
+      "replaces": "v1.0.0"
+    },
+    "SatelliteLanguage": {
+      "type": "parameter",
+      "datatype": "string",
+      "defaultValue": "pt-BR",
+      "description": "Idioma do sistema para SatelliteResourceLanguages. Ex.: pt-BR, en-US, es-ES.",
+      "replaces": "pt-BR"
+    },
+    "JwtMode": {
+      "type": "parameter",
+      "datatype": "choice",
+      "description": "Modo de autenticacao JWT.",
+      "defaultValue": "None",
+      "replaces": "ES256",
+      "choices": [
+        {
+          "choice": "None",
+          "description": "Nenhuma autenticacao JWT"
+        },
+        {
+          "choice": "HS256",
+          "description": "JWT assinado com chave simetrica"
+        },
+        {
+          "choice": "ES256",
+          "description": "JWT assinado com chave assimetrica ECDSA"
+        }
+      ]
+    },
+    "JwtIssuer": {
+      "type": "parameter",
+      "datatype": "string",
+      "defaultValue": "my-api",
+      "description": "Issuer esperado para o JWT.",
+      "replaces": "my-api"
+    },
+    "JwtAudience": {
+      "type": "parameter",
+      "datatype": "string",
+      "defaultValue": "my-api-clients",
+      "description": "Audience esperada para o JWT.",
+      "replaces": "my-api-clients"
+    },
+    "JwtAccessTokenMinutes": {
+      "type": "parameter",
+      "datatype": "int",
+      "defaultValue": "60",
+      "description": "Duracao do access token em minutos.",
+      "replaces": "60"
+    },
+    "JwtHs256Secret": {
+      "type": "parameter",
+      "datatype": "string",
+      "defaultValue": "change-me-in-secrets",
+      "description": "Segredo para assinatura HS256.",
+      "replaces": "change-me-in-secrets"
+    },
+    "JwtEs256PrivateKeyPem": {
+      "type": "parameter",
+      "datatype": "string",
+      "defaultValue": "",
+      "description": "Chave privada ES256 em PEM.",
+      "replaces": ""
+    },
+    "JwtEs256PublicKeyPem": {
+      "type": "parameter",
+      "datatype": "string",
+      "defaultValue": "",
+      "description": "Chave publica ES256 em PEM.",
+      "replaces": ""
+    },
+    "JwtExposePublicKey": {
+      "type": "parameter",
+      "datatype": "bool",
+      "defaultValue": "false",
+      "description": "Expor chave publica para validacao externa (somente ES256).",
+      "isEnabled": "(JwtMode == \"ES256\")",
+      "replaces": "True"
+    },
+    "JwtEnforceIssuer": {
+      "type": "parameter",
+      "datatype": "bool",
+      "defaultValue": "true",
+      "description": "Forcar validacao de issuer no token.",
+      "replaces": "True"
+    },
+    "JwtEnforceAudience": {
+      "type": "parameter",
+      "datatype": "bool",
+      "defaultValue": "true",
+      "description": "Forcar validacao de audience no token.",
+      "replaces": "True"
+    },
+    "JwtEnforceExpiration": {
+      "type": "parameter",
+      "datatype": "bool",
+      "defaultValue": "true",
+      "description": "Forcar expiracao do token.",
+      "replaces": "True"
+    },
+    "JwtEnforceSignedTokens": {
+      "type": "parameter",
+      "datatype": "bool",
+      "defaultValue": "true",
+      "description": "Forcar que o token esteja assinado.",
+      "replaces": "True"
+    },
+    "JwtEnforceSigningKey": {
+      "type": "parameter",
+      "datatype": "bool",
+      "defaultValue": "true",
+      "description": "Forcar validacao da chave de assinatura.",
+      "replaces": "True"
+    },
+    "DbProvider": {
+      "type": "parameter",
+      "datatype": "choice",
+      "description": "Provider padrao de banco.",
+      "defaultValue": "SqlServer",
+      "replaces": "SqlServer",
+      "choices": [
+        {
+          "choice": "Sqlite",
+          "description": "SQLite local"
+        },
+        {
+          "choice": "SqlServer",
+          "description": "Microsoft SQL Server"
+        },
+        {
+          "choice": "InMemory",
+          "description": "Banco em memoria para desenvolvimento/testes"
+        }
+      ]
+    },
+    "DbSqliteConnectionString": {
+      "type": "parameter",
+      "datatype": "string",
+      "defaultValue": "Data Source=app.db",
+      "description": "Connection string do SQLite.",
+      "replaces": "Data Source=app.db"
+    },
+    "DbSqlServerConnectionString": {
+      "type": "parameter",
+      "datatype": "string",
+      "defaultValue": "Server=localhost,1433;Database=MyApiDb;User Id=sa;Password=Your_password123;TrustServerCertificate=True;",
+      "description": "Connection string do SQL Server.",
+      "replaces": "Server=localhost,1433;Database=MyApiDb;User Id=sa;Password=Your_password123;TrustServerCertificate=True;"
+    },
+    "DbInMemoryName": {
+      "type": "parameter",
+      "datatype": "string",
+      "defaultValue": "MyApiDb",
+      "description": "Nome do banco InMemory.",
+      "replaces": "MyApiDb"
+    },
+    "WebSocketsEnabled": {
+      "type": "parameter",
+      "datatype": "bool",
+      "defaultValue": "false",
+      "description": "Habilita configuracao base de WebSockets.",
+      "replaces": "False"
+    },
+    "WebSocketsKeepAliveSeconds": {
+      "type": "parameter",
+      "datatype": "int",
+      "defaultValue": "120",
+      "description": "Tempo de keep-alive de WebSockets (segundos).",
+      "replaces": "120"
+    },
+    "LogToConsole": {
+      "type": "parameter",
+      "datatype": "bool",
+      "defaultValue": "true",
+      "description": "Habilita logging para console.",
+      "replaces": "True"
+    },
+    "LogToFile": {
+      "type": "parameter",
+      "datatype": "bool",
+      "defaultValue": "false",
+      "description": "Habilita logging para arquivo.",
+      "replaces": "False"
+    },
+    "GenerateAot": {
+      "type": "parameter",
+      "datatype": "bool",
+      "defaultValue": "false",
+      "description": "Gera projeto com PublishAot habilitado para transicao gradual.",
+      "replaces": "False"
+    },
+    "HasAuthentication": {
+      "type": "computed",
+      "value": "(JwtMode != \"None\")"
+    },
+    "IncludeJwtsEndpoint": {
+      "type": "computed",
+      "value": "(JwtMode == \"ES256\" && JwtExposePublicKey)"
+    },
+    "UserSecretsId": {
+      "type": "generated",
+      "generator": "guid",
+      "parameters": {
+        "format": "D"
+      },
+      "replaces": "FBAA3522-9C3E-4876-84DA-D8E289927085"
+    }
+  },
+  "sources": [
+    {
+      "exclude": [
+        "**/[Bb]in/**",
+        "**/[Oo]bj/**",
+        "**/.vs/**",
+        "**/.vscode/**",
+        "**/*.user",
+        "**/*.suo",
+        "**/*.cache",
+        "**/*.log"
+      ],
+      "modifiers": [
+        {
+          "condition": "(!HasAuthentication)",
+          "exclude": [
+            "Features/Authentication/**"
+          ]
+        },
+        {
+          "condition": "(!IncludeJwtsEndpoint)",
+          "exclude": [
+            "Features/Authentication/Endpoints/GetJwtsEndpoint.cs",
+            "Features/Authentication/Endpoints/Endpoints.Authentication.Jwts.cs"
+          ]
+        },
+        {
+          "condition": "(GenerateAot)",
+          "exclude": [
+            "SqlDbContext.cs",
+            "Common/Api/Filters/EnsureEntityExistsFilter.cs",
+            "Common/Api/Extensions/RouteHandlerBuilderEntityExtensions.cs",
+            "Features/Authentication/Filters/EnsureUserOwnsEntityFilter.cs",
+            "Features/Authentication/Extensions/RouteHandlerBuilderAuthenticationExtensions.cs"
+          ]
+        }
+      ]
+    }
+  ]
+}

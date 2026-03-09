@@ -1,0 +1,51 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>FBAA3522-9C3E-4876-84DA-D8E289927085</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+  
+    <AspNetCoreHostingModel>OutOfProcess</AspNetCoreHostingModel>
+    <SatelliteResourceLanguages>en;pt-BR</SatelliteResourceLanguages>
+    <_TemplateGenerateAot>False</_TemplateGenerateAot>
+    <DefineConstants Condition="'$(_TemplateGenerateAot)' == 'true' Or '$(_TemplateGenerateAot)' == 'True'">$(DefineConstants);TEMPLATE_AOT</DefineConstants>
+    <PublishAot Condition="'$(_TemplateGenerateAot)' == 'true' Or '$(_TemplateGenerateAot)' == 'True'">true</PublishAot>
+    <PublishAot Condition="'$(_TemplateGenerateAot)' != 'true' And '$(_TemplateGenerateAot)' != 'True'">false</PublishAot>
+    <PublishReadyToRun>true</PublishReadyToRun>
+    <PublishTrimmed Condition="'$(_TemplateGenerateAot)' == 'true' Or '$(_TemplateGenerateAot)' == 'True'">true</PublishTrimmed>
+    <PublishTrimmed Condition="'$(_TemplateGenerateAot)' != 'true' And '$(_TemplateGenerateAot)' != 'True'">false</PublishTrimmed>
+  
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.3" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.23.0" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(_TemplateGenerateAot)' != 'true' And '$(_TemplateGenerateAot)' != 'True'">
+    <PackageReference Include="FluentValidation" Version="12.1.1" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.1.1" />
+    <PackageReference Include="NSwag.AspNetCore" Version="14.6.3" />
+    <PackageReference Include="Serilog.AspNetCore" Version="10.0.0" />
+    <PackageReference Include="Serilog.Sinks.File" Version="7.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.3">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="10.0.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Common\Api\Filters\" />
+    <Folder Include="Common\Api\Extensions\" />
+    <Folder Include="Common\Api\Requests\" />
+    <Folder Include="Common\Api\Results\" />
+    <Folder Include="Common\Logging\" />
+    <Folder Include="Features\WeaterForecast\Extensions\" />
+  </ItemGroup>
+
+</Project>
