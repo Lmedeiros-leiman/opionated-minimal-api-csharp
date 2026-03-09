@@ -1,5 +1,6 @@
 ﻿using Serilog;
 using Serilog.Events;
+using OpionatedWebApi.Common.Serialization;
 
 namespace OpionatedWebApi;
 
@@ -10,6 +11,10 @@ public static class ServicesConfig
     {
         builder.Services.AddAuthentication();
         builder.Services.AddAuthorization();
+        builder.Services.ConfigureHttpJsonOptions(options =>
+        {
+            options.SerializerOptions.TypeInfoResolverChain.Insert(0, AppJsonSerializerContext.Default);
+        });
 
         builder.AddSerilog();
         if (builder.Environment.IsDevelopment())
