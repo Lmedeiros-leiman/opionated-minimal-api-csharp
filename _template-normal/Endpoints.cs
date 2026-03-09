@@ -19,7 +19,7 @@ public static partial class Endpoints
             .MapPublicGroup("/weatherforecast")
             .MapEndpoint<GetForecastEndpoint>();
 
-        MapAuthenticationEndpoints(BaseGroup);
+        MapPublicGroup(WeatherGroup);
 
 
     }

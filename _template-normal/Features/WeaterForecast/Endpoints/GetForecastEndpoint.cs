@@ -12,9 +12,7 @@ public class GetForecastEndpoint : IEndpoint {
         .Produces<Response[]>(StatusCodes.Status200OK);
 
 
-    private static async Task<Ok<Response[]>> Handle(
-        Request request,
-        CancellationToken cancellationToken)
+    private static Ok<Response[]> Handle()
     {
 
         var summaries = new[] {
@@ -37,11 +35,6 @@ public class GetForecastEndpoint : IEndpoint {
     {
         public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
     }
-
-
-    public record Request();
-
-
 
 
 }

@@ -1,5 +1,6 @@
 using TemplateNormal;
 using Serilog;
+using System.Runtime.CompilerServices;
 
 
 try
@@ -22,6 +23,19 @@ try
 
     builder.AddServices();
 
+    var runtimeModeLogEnabled = ReadBooleanValue(
+        builder.Configuration["Runtime:LogExecutionModeOnStartup"],
+        true);
+
+    if (runtimeModeLogEnabled)
+    {
+        var runtimeMode = RuntimeFeature.IsDynamicCodeSupported ? "JIT" : "AOT";
+        Log.Information(
+            "Runtime mode: {RuntimeMode} (DynamicCodeSupported: {DynamicCodeSupported})",
+            runtimeMode,
+            RuntimeFeature.IsDynamicCodeSupported);
+    }
+
     // Starts the application with the builder's configuration.
     var app = builder.Build();
     app.Configure();
@@ -39,5 +53,15 @@ finally
 {
     Log.Information("Application stopped");
     Log.CloseAndFlush();
+}
+
+static bool ReadBooleanValue(string? rawValue, bool defaultValue)
+{
+    if (string.IsNullOrWhiteSpace(rawValue) || rawValue.StartsWith("__", StringComparison.Ordinal))
+    {
+        return defaultValue;
+    }
+
+    return bool.TryParse(rawValue, out var parsed) ? parsed : defaultValue;
 }
 

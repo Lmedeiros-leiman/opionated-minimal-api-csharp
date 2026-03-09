@@ -8,14 +8,13 @@ public static class ServicesConfig
     // TODO:: Add auth service.
     public static void AddServices(this WebApplicationBuilder builder)
     {
+        builder.Services.AddAuthentication();
+        builder.Services.AddAuthorization();
+
         builder.AddSerilog();
         if (builder.Environment.IsDevelopment())
         {
-#if (GenerateAot)
-            builder.Services.AddOpenApi();
-#else
             builder.AddDevTools();
-#endif
         }
 
         
@@ -30,14 +29,13 @@ public static class ServicesConfig
     // Adds an UI for the OpenAPI docs under Debug.
     private static void AddDevTools(this WebApplicationBuilder builder)
     {
-#if (!GenerateAot)
         if (builder.Environment.IsDevelopment())
         {
             // Gets the config from AppSettings
             var apiInfo = builder.Configuration.GetSection("ApiInfo");
 
             // Add OpenAPI support for the container.
-            builder.Services.AddOpenApi();
+            builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddOpenApiDocument(options =>
             {
                 options.PostProcess = document =>
@@ -48,7 +46,6 @@ public static class ServicesConfig
                 };
             });
         }
-#endif
     }
 
 
@@ -59,8 +56,8 @@ public static class ServicesConfig
         builder.Host.UseSerilog((context, configuration) =>
         {
             var loggerSection = context.Configuration.GetSection("Serilog");
-            var consoleEnabled = loggerSection.GetValue<bool?>("EnableConsoleSink") ?? true;
-            var fileEnabled = loggerSection.GetValue<bool?>("EnableFileSink") ?? false;
+            var consoleEnabled = ReadBooleanValue(loggerSection, "EnableConsoleSink", true);
+            var fileEnabled = ReadBooleanValue(loggerSection, "EnableFileSink", false);
 
             configuration
                 .ReadFrom.Configuration(context.Configuration)
@@ -89,6 +86,18 @@ public static class ServicesConfig
                     outputTemplate: "[{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} {Level:u3}] {Message:lj}{NewLine}{Exception}");
             }
         });
+    }
+
+    private static bool ReadBooleanValue(IConfigurationSection section, string key, bool defaultValue)
+    {
+        var rawValue = section[key];
+
+        if (string.IsNullOrWhiteSpace(rawValue) || rawValue.StartsWith("__", StringComparison.Ordinal))
+        {
+            return defaultValue;
+        }
+
+        return bool.TryParse(rawValue, out var parsed) ? parsed : defaultValue;
     }
 
 

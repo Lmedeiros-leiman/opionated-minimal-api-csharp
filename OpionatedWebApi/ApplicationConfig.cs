@@ -10,10 +10,8 @@ public static class ApplicationConfig
         if (app.Environment.IsDevelopment())
         {
             // puts a development UI for the API.
-            app.MapOpenApi();
-#if (!GenerateAot)
+            app.UseOpenApi();
             app.UseSwaggerUi();
-#endif
             app.UseDeveloperExceptionPage();
         }
 
