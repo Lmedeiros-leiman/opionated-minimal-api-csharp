@@ -14,13 +14,12 @@
 
   <PropertyGroup>
     <!-- Publish profile controls -->
-    <_TemplateGenerateAot>__GENERATE_AOT__</_TemplateGenerateAot>
-    <PublishAot Condition="'$(_TemplateGenerateAot)' == 'true' Or '$(_TemplateGenerateAot)' == 'True'">true</PublishAot>
-    <PublishAot Condition="'$(_TemplateGenerateAot)' != 'true' And '$(_TemplateGenerateAot)' != 'True'">false</PublishAot>
     <PublishReadyToRun>true</PublishReadyToRun>
-    <PublishTrimmed Condition="'$(_TemplateGenerateAot)' == 'true' Or '$(_TemplateGenerateAot)' == 'True'">true</PublishTrimmed>
-    <PublishTrimmed Condition="'$(_TemplateGenerateAot)' != 'true' And '$(_TemplateGenerateAot)' != 'True'">false</PublishTrimmed>
-    <NoWarn Condition="'$(_TemplateGenerateAot)' == 'true' Or '$(_TemplateGenerateAot)' == 'True'">$(NoWarn);IL2104;IL3053;IL3000;IL3002</NoWarn>
+    <!--#if (GenerateAot) -->
+    <PublishAot>true</PublishAot>
+    <PublishTrimmed>true</PublishTrimmed>
+    <NoWarn>$(NoWarn);IL2104;IL3053;IL3000;IL3002</NoWarn>
+    <!--#endif -->
   
   </PropertyGroup>
 
@@ -37,6 +36,9 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <!--#if (HasAuthentication) -->
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.3" />
+    <!--#endif -->
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="10.0.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.3" />
   </ItemGroup>

@@ -1,7 +1,7 @@
-using Microsoft.EntityFrameworkCore;
 using OpionatedWebApi.Common.Api.Results;
 using OpionatedWebApi.Common.Data;
-using OpionatedWebApi.Features.Authentication;
+using OpionatedWebApi.DatabaseContext;
+using Microsoft.EntityFrameworkCore;
 
 namespace OpionatedWebApi.Features.Authentication.Filters;
 

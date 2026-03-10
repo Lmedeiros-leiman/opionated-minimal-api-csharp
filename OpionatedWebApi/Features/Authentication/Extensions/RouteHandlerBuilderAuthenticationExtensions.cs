@@ -1,4 +1,5 @@
 using OpionatedWebApi.Common.Data;
+using OpionatedWebApi.DatabaseContext;
 using OpionatedWebApi.Features.Authentication.Filters;
 
 namespace OpionatedWebApi.Features.Authentication.Extensions;

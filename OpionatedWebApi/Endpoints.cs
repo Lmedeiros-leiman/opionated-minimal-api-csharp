@@ -1,5 +1,8 @@
 ﻿using OpionatedWebApi.Features.WeaterForecast.Endpoints;
 using OpionatedWebApi.Common.Api;
+//#if (IncludeJwtsEndpoint)
+using OpionatedWebApi.Features.Authentication.Endpoints;
+//#endif
 
 namespace OpionatedWebApi;
 
@@ -13,6 +16,16 @@ public static partial class Endpoints
     {
         RouteGroupBuilder BaseGroup = app.MapGroup("");
 
+        //#if (HasAuthentication)
+        var authGroup = BaseGroup
+            .WithTags("Auth")
+            .MapPublicGroup("/.well-known");
+
+        //#if (IncludeJwtsEndpoint)
+        authGroup.MapEndpoint<GetJwtsEndpoint>();
+        //#endif
+        //#endif
+
         //
         IEndpointRouteBuilder WeatherGroup = BaseGroup
             .WithTags("Weather")
@@ -23,8 +36,6 @@ public static partial class Endpoints
 
 
     }
-
-
     //
     // Helper methods for creating groups.
     private static RouteGroupBuilder MapPublicGroup(this IEndpointRouteBuilder app, string? prefix = null)
@@ -48,5 +59,4 @@ public static partial class Endpoints
         return app;
     }
 
-    static partial void MapAuthenticationEndpoints(RouteGroupBuilder baseGroup);
 }

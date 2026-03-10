@@ -1,5 +1,6 @@
 using OpionatedWebApi.Common.Api.Filters;
 using OpionatedWebApi.Common.Data;
+using OpionatedWebApi.DatabaseContext;
 
 namespace OpionatedWebApi.Common.Api.Extensions;
 

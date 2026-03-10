@@ -8,7 +8,9 @@ public interface IEntity
     Guid ReferenceId { get; }
 }
 
+//#if (HasAuthentication)
 public interface IOwnedEntity
 {
     int UserId { get; }
 }
+//#endif

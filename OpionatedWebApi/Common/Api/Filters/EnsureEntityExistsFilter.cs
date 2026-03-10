@@ -1,6 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
-using OpionatedWebApi.Common.Api.Results;
+﻿using OpionatedWebApi.Common.Api.Results;
 using OpionatedWebApi.Common.Data;
+using OpionatedWebApi.DatabaseContext;
+using Microsoft.EntityFrameworkCore;
 
 namespace OpionatedWebApi.Common.Api.Filters;
 

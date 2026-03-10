@@ -1,20 +1,25 @@
 ﻿using Serilog;
 using Serilog.Events;
 using OpionatedWebApi.Common.Serialization;
+using Microsoft.EntityFrameworkCore;
+using OpionatedWebApi.DatabaseContext;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace OpionatedWebApi;
 
-public static class ServicesConfig
+public static partial class ServicesConfig
 {
     // TODO:: Add auth service.
     public static void AddServices(this WebApplicationBuilder builder)
     {
         builder.Services.AddAuthentication();
         builder.Services.AddAuthorization();
-        builder.Services.ConfigureHttpJsonOptions(options =>
-        {
-            options.SerializerOptions.TypeInfoResolverChain.Insert(0, AppJsonSerializerContext.Default);
-        });
+        //#if (HasAuthentication)
+        builder.AddAuthenticationServices();
+        //#endif
+        builder.AddDatabase();
+        builder.AddJsonSerialization();
 
         builder.AddSerilog();
         if (builder.Environment.IsDevelopment())
@@ -24,10 +29,37 @@ public static class ServicesConfig
 
         
         //builder.Services.AddAuditLog();
-        //builder.AddDatabase();
-        //builder.AddJsonSerialization();
-        //builder.AddJwtAuthentication();
-        //builder.Services.AddValidatorsFromAssembly(typeof(ConfigureServices).Assembly);
+        // wtf? -> //builder.Services.AddValidatorsFromAssembly(typeof(ConfigureServices).Assembly);
+    }
+
+    // Centralizes API JSON options and keeps AOT-generated context as the first resolver.
+    private static void AddJsonSerialization(this WebApplicationBuilder builder)
+    {
+        builder.Services.ConfigureHttpJsonOptions(options =>
+        {
+            options.SerializerOptions.TypeInfoResolverChain.Insert(0, AppJsonSerializerContext.Default);
+            options.SerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+            options.SerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+
+            //#if (GenerateAot)
+            ConfigureJsonSerialization(options.SerializerOptions);
+            //#endif
+        });
+    }
+
+    // Adds SQL Server database context for runtime data access.
+    private static void AddDatabase(this WebApplicationBuilder builder)
+    {
+        var connectionString =
+            builder.Configuration["Database:SqlServer:ConnectionString"]
+            ?? builder.Configuration.GetConnectionString("Default");
+
+        if (string.IsNullOrWhiteSpace(connectionString))
+        {
+            throw new InvalidOperationException("SQL connection string not configured. Set Database:SqlServer:ConnectionString or ConnectionStrings:Default.");
+        }
+
+        builder.Services.AddDbContext<SqlDbContext>(options => options.UseSqlServer(connectionString));
     }
 
 
@@ -43,6 +75,10 @@ public static class ServicesConfig
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddOpenApiDocument(options =>
             {
+                //#if (HasAuthentication)
+                ConfigureOpenApiSecurity(options);
+                //#endif
+
                 options.PostProcess = document =>
                 {
                     document.Info.Title = apiInfo["Name"] ?? "Unnamed Api";
@@ -53,6 +89,17 @@ public static class ServicesConfig
         }
     }
 
+    //#if (HasAuthentication)
+    static partial void AddAuthenticationServices(this WebApplicationBuilder builder);
+
+    static partial void ConfigureOpenApiSecurity(NSwag.Generation.AspNetCore.AspNetCoreOpenApiDocumentGeneratorSettings options);
+    //#endif
+
+    //#if (GenerateAot)
+    static partial void ConfigureJsonSerialization(JsonSerializerOptions options);
+    //#endif
+
+
 
     // Overides Logger with an external configuration, found in appsettings.json.
     // This overrides the original configuration in Program.cs.
@@ -60,27 +107,24 @@ public static class ServicesConfig
     {
         builder.Host.UseSerilog((context, configuration) =>
         {
+            // By default aways uses console as an opt-out, but keeps file sink a opt-in feature
             var loggerSection = context.Configuration.GetSection("Serilog");
-            var consoleEnabled = ReadBooleanValue(loggerSection, "EnableConsoleSink", true);
-            var fileEnabled = ReadBooleanValue(loggerSection, "EnableFileSink", false);
+
+            bool isConsoleEnabled = loggerSection.GetValue("enableConsoleSink", true);
+            bool isFileEnabled = loggerSection.GetValue("enableFileSink", false);
+
 
             configuration
                 .ReadFrom.Configuration(context.Configuration)
                 .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
                 .MinimumLevel.Override("System", LogEventLevel.Warning);
 
-            if (!consoleEnabled && !fileEnabled)
-            {
-                configuration.WriteTo.Console();
-                return;
-            }
-
-            if (consoleEnabled)
+            if (isConsoleEnabled)
             {
                 configuration.WriteTo.Console();
             }
 
-            if (fileEnabled)
+            if (isFileEnabled)
             {
                 configuration.WriteTo.File(
                     path: "Logs/app-.log",
@@ -92,21 +136,6 @@ public static class ServicesConfig
             }
         });
     }
-
-    private static bool ReadBooleanValue(IConfigurationSection section, string key, bool defaultValue)
-    {
-        var rawValue = section[key];
-
-        if (string.IsNullOrWhiteSpace(rawValue) || rawValue.StartsWith("__", StringComparison.Ordinal))
-        {
-            return defaultValue;
-        }
-
-        return bool.TryParse(rawValue, out var parsed) ? parsed : defaultValue;
-    }
-
-
-
 
 
 }

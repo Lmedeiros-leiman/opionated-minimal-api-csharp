@@ -242,7 +242,7 @@
         {
           "condition": "(GenerateAot)",
           "exclude": [
-            "SqlDbContext.cs",
+            "DatabaseCDontext/SqlDbContext.cs",
             "Common/Api/Filters/EnsureEntityExistsFilter.cs",
             "Common/Api/Extensions/RouteHandlerBuilderEntityExtensions.cs",
             "Features/Authentication/Filters/EnsureUserOwnsEntityFilter.cs",
