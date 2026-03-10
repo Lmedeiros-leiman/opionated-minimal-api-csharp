@@ -44,14 +44,14 @@ public static partial class Endpoints
             .AllowAnonymous();
     }
 
-
+    //#if (HasAuthentication)
     private static RouteGroupBuilder MapAuthorizedGroup(this IEndpointRouteBuilder app, string? prefix = null)
     {
 
         return app.MapGroup(prefix ?? string.Empty)
             .RequireAuthorization();
     }
-
+    //#endif
 
     private static IEndpointRouteBuilder MapEndpoint<TEndpoint>(this IEndpointRouteBuilder app) where TEndpoint : IEndpoint
     {

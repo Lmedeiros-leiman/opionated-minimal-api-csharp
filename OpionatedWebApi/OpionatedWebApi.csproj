@@ -10,11 +10,7 @@
 
     <AspNetCoreHostingModel>OutOfProcess</AspNetCoreHostingModel>
     <SatelliteResourceLanguages>en;pt-BR</SatelliteResourceLanguages>
-  </PropertyGroup>
-
-  <PropertyGroup>
-    <!-- Publish profile controls -->
-    <PublishReadyToRun>true</PublishReadyToRun>
+ 
     <!--#if (GenerateAot) -->
     <PublishAot>true</PublishAot>
     <PublishTrimmed>true</PublishTrimmed>

@@ -22,6 +22,11 @@
     "language": "C#",
     "type": "project"
   },
+  "forms": {
+    "toLower": {
+      "identifier": "lowerCase"
+    }
+  },
   "symbols": {
     "ApiName": {
       "type": "parameter",
@@ -44,6 +49,7 @@
       "description": "Idioma do sistema para SatelliteResourceLanguages. Ex.: pt-BR, en-US, es-ES.",
       "replaces": "pt-BR"
     },
+
     "JwtMode": {
       "type": "parameter",
       "datatype": "choice",
@@ -65,12 +71,25 @@
         }
       ]
     },
+    "HasAuthentication": {
+      "type": "computed",
+      "value": "(JwtMode != \"None\")"
+    },
+    "UsingJwtHs256": {
+      "type": "computed",
+      "value": "(JwtMode == \"HS256\")"
+    },
+    "UsingJwtEs256": {
+      "type": "computed",
+      "value": "(JwtMode == \"ES256\")"
+    },
+
     "JwtIssuer": {
       "type": "parameter",
       "datatype": "string",
       "defaultValue": "my-api",
       "description": "Issuer esperado para o JWT.",
-      "isEnabled": "(JwtMode != \"None\")",
+      "isEnabled": "(HasAuthentication)",
       "replaces": "__JWT_ISSUER__"
     },
     "JwtAudience": {
@@ -78,7 +97,7 @@
       "datatype": "string",
       "defaultValue": "my-api-clients",
       "description": "Audience esperada para o JWT.",
-      "isEnabled": "(JwtMode != \"None\")",
+      "isEnabled": "(HasAuthentication)",
       "replaces": "__JWT_AUDIENCE__"
     },
     "JwtAccessTokenMinutes": {
@@ -86,47 +105,18 @@
       "datatype": "int",
       "defaultValue": "60",
       "description": "Duracao do access token em minutos.",
-      "isEnabled": "(JwtMode != \"None\")",
+      "isEnabled": "(HasAuthentication)",
       "replaces": "__JWT_ACCESS_TOKEN_MINUTES__"
-    },
-    "JwtHs256Secret": {
-      "type": "parameter",
-      "datatype": "string",
-      "defaultValue": "change-me-in-secrets",
-      "description": "Segredo para assinatura HS256.",
-      "isEnabled": "(JwtMode == \"HS256\")",
-      "replaces": "__JWT_HS256_SECRET__"
-    },
-    "JwtEs256PrivateKeyPem": {
-      "type": "parameter",
-      "datatype": "string",
-      "defaultValue": "",
-      "description": "Chave privada ES256 em PEM.",
-      "isEnabled": "(JwtMode == \"ES256\")",
-      "replaces": "__JWT_ES256_PRIVATE_KEY_PEM__"
-    },
-    "JwtEs256PublicKeyPem": {
-      "type": "parameter",
-      "datatype": "string",
-      "defaultValue": "",
-      "description": "Chave publica ES256 em PEM.",
-      "isEnabled": "(JwtMode == \"ES256\")",
-      "replaces": "__JWT_ES256_PUBLIC_KEY_PEM__"
-    },
-    "JwtExposePublicKey": {
-      "type": "parameter",
-      "datatype": "bool",
-      "defaultValue": "false",
-      "description": "Expor chave publica para validacao externa (somente ES256).",
-      "isEnabled": "(JwtMode == \"ES256\")",
-      "replaces": "__JWT_EXPOSE_PUBLIC_KEY__"
     },
     "JwtEnforceIssuer": {
       "type": "parameter",
       "datatype": "bool",
       "defaultValue": "true",
       "description": "Forcar validacao de issuer no token.",
-      "isEnabled": "(JwtMode != \"None\")",
+      "isEnabled": "(HasAuthentication)",
+      "forms": {
+        "global": "toLower"
+      },
       "replaces": "__JWT_ENFORCE_ISSUER__"
     },
     "JwtEnforceAudience": {
@@ -134,7 +124,10 @@
       "datatype": "bool",
       "defaultValue": "true",
       "description": "Forcar validacao de audience no token.",
-      "isEnabled": "(JwtMode != \"None\")",
+      "isEnabled": "(HasAuthentication)",
+      "forms": {
+        "global": "toLower"
+      },
       "replaces": "__JWT_ENFORCE_AUDIENCE__"
     },
     "JwtEnforceExpiration": {
@@ -142,7 +135,10 @@
       "datatype": "bool",
       "defaultValue": "true",
       "description": "Forcar expiracao do token.",
-      "isEnabled": "(JwtMode != \"None\")",
+      "isEnabled": "(HasAuthentication)",
+      "forms": {
+        "global": "toLower"
+      },
       "replaces": "__JWT_ENFORCE_EXPIRATION__"
     },
     "JwtEnforceSignedTokens": {
@@ -150,7 +146,10 @@
       "datatype": "bool",
       "defaultValue": "true",
       "description": "Forcar que o token esteja assinado.",
-      "isEnabled": "(JwtMode != \"None\")",
+      "isEnabled": "(HasAuthentication)",
+      "forms": {
+        "global": "toLower"
+      },
       "replaces": "__JWT_ENFORCE_SIGNED_TOKENS__"
     },
     "JwtEnforceSigningKey": {
@@ -158,28 +157,85 @@
       "datatype": "bool",
       "defaultValue": "true",
       "description": "Forcar validacao da chave de assinatura.",
-      "isEnabled": "(JwtMode != \"None\")",
+      "isEnabled": "(HasAuthentication)",
+      "forms": {
+        "global": "toLower"
+      },
       "replaces": "__JWT_ENFORCE_SIGNING_KEY__"
     },
+
+    "JwtHs256Secret": {
+      "type": "parameter",
+      "datatype": "string",
+      "defaultValue": "change-me-in-secrets",
+      "description": "Segredo para assinatura HS256.",
+      "isEnabled": "(UsingJwtHs256)",
+      "replaces": "__JWT_HS256_SECRET__"
+    },
+
+    "JwtEs256PrivateKeyPem": {
+      "type": "parameter",
+      "datatype": "string",
+      "defaultValue": "",
+      "description": "Chave privada ES256 em PEM.",
+      "isEnabled": "(UsingJwtEs256)",
+      "replaces": "__JWT_ES256_PRIVATE_KEY_PEM__"
+    },
+    "JwtEs256PublicKeyPem": {
+      "type": "parameter",
+      "datatype": "string",
+      "defaultValue": "",
+      "description": "Chave publica ES256 em PEM.",
+      "isEnabled": "(UsingJwtEs256)",
+      "replaces": "__JWT_ES256_PUBLIC_KEY_PEM__"
+    },
+    "JwtExposePublicKey": {
+      "type": "parameter",
+      "datatype": "bool",
+      "defaultValue": "false",
+      "description": "Expor chave publica para validacao externa (somente ES256).",
+      "isEnabled": "(UsingJwtEs256)",
+      "forms": {
+        "global": "toLower"
+      },
+      "replaces": "__JWT_EXPOSE_PUBLIC_KEY__"
+    },
+    "IncludeJwtsEndpoint": {
+      "type": "computed",
+      "value": "(UsingJwtEs256 && JwtExposePublicKey)"
+    },
+
     "WebSocketsEnabled": {
       "type": "parameter",
       "datatype": "bool",
       "defaultValue": "false",
       "description": "Habilita configuracao base de WebSockets.",
+      "forms": {
+        "global": "toLower"
+      },
       "replaces": "__WEBSOCKETS_ENABLED__"
+    },
+    "HasWebSockets": {
+      "type": "computed",
+      "value": "(WebSocketsEnabled)"
     },
     "WebSocketsKeepAliveSeconds": {
       "type": "parameter",
       "datatype": "int",
       "defaultValue": "120",
       "description": "Tempo de keep-alive de WebSockets (segundos).",
+      "isEnabled": "(HasWebSockets)",
       "replaces": "__WEBSOCKETS_KEEP_ALIVE_SECONDS__"
     },
+
     "LogToConsole": {
       "type": "parameter",
       "datatype": "bool",
       "defaultValue": "true",
       "description": "Habilita logging para console.",
+      "forms": {
+        "global": "toLower"
+      },
       "replaces": "__LOG_TO_CONSOLE__"
     },
     "LogToFile": {
@@ -187,6 +243,9 @@
       "datatype": "bool",
       "defaultValue": "false",
       "description": "Habilita logging para arquivo.",
+      "forms": {
+        "global": "toLower"
+      },
       "replaces": "__LOG_TO_FILE__"
     },
     "GenerateAot": {
@@ -194,16 +253,12 @@
       "datatype": "bool",
       "defaultValue": "false",
       "description": "Gera projeto com PublishAot habilitado para transicao gradual.",
+      "forms": {
+        "global": "toLower"
+      },
       "replaces": "__GENERATE_AOT__"
     },
-    "HasAuthentication": {
-      "type": "computed",
-      "value": "(JwtMode != \"None\")"
-    },
-    "IncludeJwtsEndpoint": {
-      "type": "computed",
-      "value": "(JwtMode == \"ES256\" && JwtExposePublicKey)"
-    },
+
     "UserSecretsId": {
       "type": "generated",
       "generator": "guid",
