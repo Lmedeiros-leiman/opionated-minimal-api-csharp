@@ -89,7 +89,7 @@
       "datatype": "string",
       "defaultValue": "my-api",
       "description": "Issuer esperado para o JWT.",
-      "isEnabled": "(HasAuthentication)",
+      "isEnabled": "(JwtMode != \"None\")",
       "replaces": "__JWT_ISSUER__"
     },
     "JwtAudience": {
@@ -97,7 +97,7 @@
       "datatype": "string",
       "defaultValue": "my-api-clients",
       "description": "Audience esperada para o JWT.",
-      "isEnabled": "(HasAuthentication)",
+      "isEnabled": "(JwtMode != \"None\")",
       "replaces": "__JWT_AUDIENCE__"
     },
     "JwtAccessTokenMinutes": {
@@ -105,7 +105,7 @@
       "datatype": "int",
       "defaultValue": "60",
       "description": "Duracao do access token em minutos.",
-      "isEnabled": "(HasAuthentication)",
+      "isEnabled": "(JwtMode != \"None\")",
       "replaces": "__JWT_ACCESS_TOKEN_MINUTES__"
     },
     "JwtEnforceIssuer": {
@@ -113,7 +113,7 @@
       "datatype": "bool",
       "defaultValue": "true",
       "description": "Forcar validacao de issuer no token.",
-      "isEnabled": "(HasAuthentication)",
+      "isEnabled": "(JwtMode != \"None\")",
       "forms": {
         "global": [ "toLower" ]
       },
@@ -124,7 +124,7 @@
       "datatype": "bool",
       "defaultValue": "true",
       "description": "Forcar validacao de audience no token.",
-      "isEnabled": "(HasAuthentication)",
+      "isEnabled": "(JwtMode != \"None\")",
       "forms": {
         "global": [ "toLower" ]
       },
@@ -135,7 +135,7 @@
       "datatype": "bool",
       "defaultValue": "true",
       "description": "Forcar expiracao do token.",
-      "isEnabled": "(HasAuthentication)",
+      "isEnabled": "(JwtMode != \"None\")",
       "forms": {
         "global": [ "toLower" ]
       },
@@ -146,7 +146,7 @@
       "datatype": "bool",
       "defaultValue": "true",
       "description": "Forcar que o token esteja assinado.",
-      "isEnabled": "(HasAuthentication)",
+      "isEnabled": "(JwtMode != \"None\")",
       "forms": {
         "global": [ "toLower" ]
       },
@@ -157,7 +157,7 @@
       "datatype": "bool",
       "defaultValue": "true",
       "description": "Forcar validacao da chave de assinatura.",
-      "isEnabled": "(HasAuthentication)",
+      "isEnabled": "(JwtMode != \"None\")",
       "forms": {
         "global": [ "toLower" ]
       },
@@ -169,7 +169,7 @@
       "datatype": "string",
       "defaultValue": "change-me-in-secrets",
       "description": "Segredo para assinatura HS256.",
-      "isEnabled": "(UsingJwtHs256)",
+      "isEnabled": "(JwtMode == \"HS256\")",
       "replaces": "__JWT_HS256_SECRET__"
     },
 
@@ -178,7 +178,7 @@
       "datatype": "string",
       "defaultValue": "",
       "description": "Chave privada ES256 em PEM.",
-      "isEnabled": "(UsingJwtEs256)",
+      "isEnabled": "(JwtMode == \"ES256\")",
       "replaces": "__JWT_ES256_PRIVATE_KEY_PEM__"
     },
     "JwtEs256PublicKeyPem": {
@@ -186,7 +186,7 @@
       "datatype": "string",
       "defaultValue": "",
       "description": "Chave publica ES256 em PEM.",
-      "isEnabled": "(UsingJwtEs256)",
+      "isEnabled": "(JwtMode == \"ES256\")",
       "replaces": "__JWT_ES256_PUBLIC_KEY_PEM__"
     },
     "JwtExposePublicKey": {
@@ -194,7 +194,7 @@
       "datatype": "bool",
       "defaultValue": "false",
       "description": "Expor chave publica para validacao externa (somente ES256).",
-      "isEnabled": "(UsingJwtEs256)",
+      "isEnabled": "(JwtMode == \"ES256\")",
       "forms": {
         "global": [ "toLower" ]
       },
@@ -224,7 +224,7 @@
       "datatype": "int",
       "defaultValue": "120",
       "description": "Tempo de keep-alive de WebSockets (segundos).",
-      "isEnabled": "(HasWebSockets)",
+      "isEnabled": "(WebSocketsEnabled)",
       "replaces": "__WEBSOCKETS_KEEP_ALIVE_SECONDS__"
     },
 

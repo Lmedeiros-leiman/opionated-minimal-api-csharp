@@ -13,4 +13,3 @@ public interface IOwnedEntity
 {
     int UserId { get; }
 }
-//#endif
