@@ -10,7 +10,9 @@ namespace OpionatedWebApi;
 
 public static partial class ServicesConfig
 {
+    //#if (HasAuthentication)
     // TODO:: Add auth service.
+    //#endif
     public static void AddServices(this WebApplicationBuilder builder)
     {
         builder.Services.AddAuthentication();
@@ -29,7 +31,6 @@ public static partial class ServicesConfig
 
         
         //builder.Services.AddAuditLog();
-        // wtf? -> //builder.Services.AddValidatorsFromAssembly(typeof(ConfigureServices).Assembly);
     }
 
     // Centralizes API JSON options and keeps AOT-generated context as the first resolver.
