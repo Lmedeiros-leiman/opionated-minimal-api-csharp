@@ -115,7 +115,7 @@
       "description": "Forcar validacao de issuer no token.",
       "isEnabled": "(HasAuthentication)",
       "forms": {
-        "global": "toLower"
+        "global": [ "toLower" ]
       },
       "replaces": "__JWT_ENFORCE_ISSUER__"
     },
@@ -126,7 +126,7 @@
       "description": "Forcar validacao de audience no token.",
       "isEnabled": "(HasAuthentication)",
       "forms": {
-        "global": "toLower"
+        "global": [ "toLower" ]
       },
       "replaces": "__JWT_ENFORCE_AUDIENCE__"
     },
@@ -137,7 +137,7 @@
       "description": "Forcar expiracao do token.",
       "isEnabled": "(HasAuthentication)",
       "forms": {
-        "global": "toLower"
+        "global": [ "toLower" ]
       },
       "replaces": "__JWT_ENFORCE_EXPIRATION__"
     },
@@ -148,7 +148,7 @@
       "description": "Forcar que o token esteja assinado.",
       "isEnabled": "(HasAuthentication)",
       "forms": {
-        "global": "toLower"
+        "global": [ "toLower" ]
       },
       "replaces": "__JWT_ENFORCE_SIGNED_TOKENS__"
     },
@@ -159,7 +159,7 @@
       "description": "Forcar validacao da chave de assinatura.",
       "isEnabled": "(HasAuthentication)",
       "forms": {
-        "global": "toLower"
+        "global": [ "toLower" ]
       },
       "replaces": "__JWT_ENFORCE_SIGNING_KEY__"
     },
@@ -196,7 +196,7 @@
       "description": "Expor chave publica para validacao externa (somente ES256).",
       "isEnabled": "(UsingJwtEs256)",
       "forms": {
-        "global": "toLower"
+        "global": [ "toLower" ]
       },
       "replaces": "__JWT_EXPOSE_PUBLIC_KEY__"
     },
@@ -211,7 +211,7 @@
       "defaultValue": "false",
       "description": "Habilita configuracao base de WebSockets.",
       "forms": {
-        "global": "toLower"
+        "global": [ "toLower" ]
       },
       "replaces": "__WEBSOCKETS_ENABLED__"
     },
@@ -234,7 +234,7 @@
       "defaultValue": "true",
       "description": "Habilita logging para console.",
       "forms": {
-        "global": "toLower"
+        "global": [ "toLower" ]
       },
       "replaces": "__LOG_TO_CONSOLE__"
     },
@@ -244,7 +244,7 @@
       "defaultValue": "false",
       "description": "Habilita logging para arquivo.",
       "forms": {
-        "global": "toLower"
+        "global": [ "toLower" ]
       },
       "replaces": "__LOG_TO_FILE__"
     },
@@ -254,7 +254,7 @@
       "defaultValue": "false",
       "description": "Gera projeto com PublishAot habilitado para transicao gradual.",
       "forms": {
-        "global": "toLower"
+        "global": [ "toLower" ]
       },
       "replaces": "__GENERATE_AOT__"
     },
@@ -297,7 +297,7 @@
         {
           "condition": "(GenerateAot)",
           "exclude": [
-            "DatabaseCDontext/SqlDbContext.cs",
+            "SqlDbContext.cs",
             "Common/Api/Filters/EnsureEntityExistsFilter.cs",
             "Common/Api/Extensions/RouteHandlerBuilderEntityExtensions.cs",
             "Features/Authentication/Filters/EnsureUserOwnsEntityFilter.cs",
